@@ -39,15 +39,12 @@ public class DBHelper extends SQLiteOpenHelper {
     // CREATE
     // ------------------------------
     public long addStudent(Student student) {
-        long result = -1;
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("name", student.getName());
         cv.put("course", student.getCourse());
         cv.put("image", student.getImage());
-        result = db.insert(STUDENTS, null, cv);
-        db.close();
-        return result;
+        return db.insert(STUDENTS, null, cv);
     }
 
     // ------------------------------
@@ -56,7 +53,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public ArrayList<Student> getAllStudents() {
         ArrayList<Student> list = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(STUDENTS, null, null, null, null, null, "name");
+        Cursor cursor = db.query(STUDENTS, null, null, null, null, null, "name ASC");
 
         if (cursor.moveToFirst()) {
             do {
@@ -72,7 +69,6 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         cursor.close();
-        db.close();
         return list;
     }
 
@@ -101,7 +97,6 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         cursor.close();
-        db.close();
         return s;
     }
 
@@ -114,11 +109,7 @@ public class DBHelper extends SQLiteOpenHelper {
         cv.put("name", student.getName());
         cv.put("course", student.getCourse());
         cv.put("image", student.getImage());
-
-        int result = db.update(STUDENTS, cv, "id = ?", new String[]{String.valueOf(student.getId())});
-        db.close();
-        return result;
-
+        return db.update(STUDENTS, cv, "id = ?", new String[]{String.valueOf(student.getId())});
     }
 
     // ------------------------------
@@ -126,8 +117,6 @@ public class DBHelper extends SQLiteOpenHelper {
     // ------------------------------
     public int deleteStudent(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        int result = db.delete(STUDENTS, "id = ?", new String[]{String.valueOf(id)});
-        db.close();
-        return result;
+        return db.delete(STUDENTS, "id = ?", new String[]{String.valueOf(id)});
     }
 }
